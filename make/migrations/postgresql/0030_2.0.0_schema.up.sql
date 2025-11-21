@@ -19,7 +19,7 @@ table artifact:
 ALTER TABLE admin_job ADD COLUMN job_parameters varchar(255) Default '';
 
 /*record the data version to decide whether the data migration should be skipped*/
-ALTER TABLE schema_migrations ADD COLUMN data_version int;
+--ALTER TABLE schema_migrations ADD COLUMN data_version int;
 
 ALTER TABLE artifact ADD COLUMN repository_id int;
 ALTER TABLE artifact ADD COLUMN media_type varchar(255);
@@ -209,8 +209,8 @@ ALTER TABLE replication_task ALTER COLUMN src_resource TYPE varchar(512);
 ALTER TABLE replication_task ALTER COLUMN dst_resource TYPE varchar(512);
 
 /*remove count from quota hard and quota_usage used json*/
-UPDATE quota SET hard = hard - 'count';
-UPDATE quota_usage SET used = used - 'count';
+--UPDATE quota SET hard = hard - 'count';
+--UPDATE quota_usage SET used = used - 'count';
 
 /* make Clair and Trivy as reserved name for scanners in-tree */
 UPDATE scanner_registration SET name = concat_ws('-', name, uuid) WHERE name IN ('Clair', 'Trivy') AND immutable = FALSE;

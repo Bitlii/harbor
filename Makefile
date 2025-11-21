@@ -157,7 +157,7 @@ GOINSTALL=$(GOCMD) install
 GOTEST=$(GOCMD) test
 GODEP=$(GOTEST) -i
 GOFMT=gofmt -w
-GOBUILDIMAGE=golang:1.19.4
+GOBUILDIMAGE=m.daocloud.io/docker.io/library/golang:1.19.4
 GOBUILDPATHINCONTAINER=/harbor
 
 # go build

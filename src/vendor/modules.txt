@@ -1,6 +1,12 @@
 # cloud.google.com/go v0.99.0
 ## explicit; go 1.11
 cloud.google.com/go/compute/metadata
+# gitee.com/opengauss/openGauss-connector-go-pq v1.0.4
+## explicit; go 1.13
+gitee.com/opengauss/openGauss-connector-go-pq
+gitee.com/opengauss/openGauss-connector-go-pq/oid
+gitee.com/opengauss/openGauss-connector-go-pq/pgpassfile
+gitee.com/opengauss/openGauss-connector-go-pq/pgservicefile
 # github.com/Azure/azure-sdk-for-go v37.2.0+incompatible
 ## explicit
 github.com/Azure/azure-sdk-for-go/storage
@@ -404,7 +410,7 @@ github.com/golang-jwt/jwt/v4
 github.com/golang-migrate/migrate/v4
 github.com/golang-migrate/migrate/v4/database
 github.com/golang-migrate/migrate/v4/database/multistmt
-github.com/golang-migrate/migrate/v4/database/pgx
+github.com/golang-migrate/migrate/v4/database/postgres
 github.com/golang-migrate/migrate/v4/internal/url
 github.com/golang-migrate/migrate/v4/source
 github.com/golang-migrate/migrate/v4/source/file
@@ -511,9 +517,6 @@ github.com/jackc/chunkreader/v2
 github.com/jackc/pgconn
 github.com/jackc/pgconn/internal/ctxwatch
 github.com/jackc/pgconn/stmtcache
-# github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
-## explicit; go 1.12
-github.com/jackc/pgerrcode
 # github.com/jackc/pgio v1.0.0
 ## explicit; go 1.12
 github.com/jackc/pgio
@@ -556,6 +559,11 @@ github.com/klauspost/compress/huff0
 github.com/klauspost/compress/internal/snapref
 github.com/klauspost/compress/zstd
 github.com/klauspost/compress/zstd/internal/xxhash
+# github.com/lib/pq v1.10.6
+## explicit; go 1.13
+github.com/lib/pq
+github.com/lib/pq/oid
+github.com/lib/pq/scram
 # github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de
 ## explicit
 github.com/liggitt/tabwriter
@@ -726,6 +734,9 @@ github.com/theupdateframework/notary/tuf/data
 github.com/theupdateframework/notary/tuf/signed
 github.com/theupdateframework/notary/tuf/utils
 github.com/theupdateframework/notary/tuf/validation
+# github.com/tjfoc/gmsm v1.4.1
+## explicit; go 1.14
+github.com/tjfoc/gmsm/sm3
 # github.com/vmihailenco/msgpack/v5 v5.0.0-rc.2
 ## explicit; go 1.11
 github.com/vmihailenco/msgpack/v5
@@ -890,8 +901,14 @@ golang.org/x/term
 ## explicit; go 1.17
 golang.org/x/text/cases
 golang.org/x/text/encoding
+golang.org/x/text/encoding/charmap
+golang.org/x/text/encoding/ianaindex
 golang.org/x/text/encoding/internal
 golang.org/x/text/encoding/internal/identifier
+golang.org/x/text/encoding/japanese
+golang.org/x/text/encoding/korean
+golang.org/x/text/encoding/simplifiedchinese
+golang.org/x/text/encoding/traditionalchinese
 golang.org/x/text/encoding/unicode
 golang.org/x/text/internal
 golang.org/x/text/internal/language
@@ -909,6 +926,10 @@ golang.org/x/text/width
 # golang.org/x/time v0.0.0-20220210224613-90d013bbcef8
 ## explicit
 golang.org/x/time/rate
+# golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
+## explicit; go 1.11
+golang.org/x/xerrors
+golang.org/x/xerrors/internal
 # google.golang.org/api v0.61.0 => google.golang.org/api v0.0.0-20160322025152-9bf6e6e569ff
 ## explicit
 google.golang.org/api/gensupport

@@ -173,9 +173,10 @@ func main() {
 		log.Info("skip the database migrate")
 	} else {
 		// Run migrator as normal
-		if err = migration.Migrate(database); err != nil {
-			log.Fatalf("failed to migrate the database, error: %v", err)
-		}
+		// 用gaussdb，手动初始化
+		//if err = migration.Migrate(database); err != nil {
+		//	log.Fatalf("failed to migrate the database, error: %v", err)
+		//}
 	}
 
 	ctx = orm.Clone(ctx)

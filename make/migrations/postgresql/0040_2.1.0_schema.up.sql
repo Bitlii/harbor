@@ -138,7 +138,7 @@ INSERT INTO data_migrations (version) SELECT (
         ELSE 0
     END
 ) WHERE NOT EXISTS (SELECT * FROM data_migrations);
-ALTER TABLE schema_migrations DROP COLUMN IF EXISTS data_version;
+--ALTER TABLE schema_migrations DROP COLUMN IF EXISTS data_version;
 
 ALTER TABLE artifact ADD COLUMN IF NOT EXISTS icon varchar(255);
 

@@ -74,7 +74,8 @@ ALTER TABLE replication_policy ADD COLUMN src_registry_id int;
 if harbor is integrated with the external project service, we cannot get the project name by ID,
 which means the repilcation policy will match all resources.*/
 UPDATE replication_policy SET filters='[]' WHERE filters='';
-UPDATE replication_policy r SET filters=( r.filters::jsonb || (SELECT CONCAT('{"type":"name","value":"', p.name,'/**"}') FROM project p WHERE p.project_id=r.project_id)::jsonb);
+
+-- UPDATE replication_policy r SET filters=( r.filters::jsonb || (SELECT CONCAT('{"type":"name","value":"', p.name,'/**"}') FROM project p WHERE p.project_id=r.project_id)::jsonb);
 ALTER TABLE replication_policy RENAME COLUMN target_id TO dest_registry_id;
 ALTER TABLE replication_policy ALTER COLUMN dest_registry_id DROP NOT NULL;
 ALTER TABLE replication_policy ADD COLUMN dest_namespace varchar(256);
