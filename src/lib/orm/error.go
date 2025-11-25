@@ -15,8 +15,11 @@
 package orm
 
 import (
+	"strings"
+
 	"github.com/beego/beego/orm"
 	"github.com/jackc/pgconn"
+	"github.com/lib/pq"
 
 	"github.com/goharbor/harbor/src/lib/errors"
 )
@@ -86,8 +89,24 @@ func AsForeignKeyError(err error, messageFormat string, args ...interface{}) *er
 
 // IsDuplicateKeyError check the duplicate key error
 func IsDuplicateKeyError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	// pgx/pgconn
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+		return true
+	}
+
+	// lib/pq
+	var pqErr *pq.Error
+	if errors.As(err, &pqErr) && pqErr.Code == "23505" {
+		return true
+	}
+
+	// fallback to string match
+	if strings.Contains(err.Error(), "violates unique constraint") {
 		return true
 	}
 
@@ -95,8 +114,24 @@ func IsDuplicateKeyError(err error) bool {
 }
 
 func isViolatingForeignKeyConstraintError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	// pgx/pgconn
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) && pgErr.Code == "23503" {
+		return true
+	}
+
+	// lib/pq
+	var pqErr *pq.Error
+	if errors.As(err, &pqErr) && pqErr.Code == "23503" {
+		return true
+	}
+
+	// fallback to string match
+	if strings.Contains(err.Error(), "violates foreign key constraint") {
 		return true
 	}
 
