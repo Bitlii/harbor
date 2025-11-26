@@ -121,7 +121,19 @@ func tokenSvcEndpoint(req *http.Request) (string, error) {
 	if match(req.Context(), req.Host, rawCoreURL) {
 		return rawCoreURL, nil
 	}
-	return config.ExtEndpoint()
+
+	// return config.ExtEndpoint()
+
+	// 从 req.Host 获取客户端请求的域名和端口
+	host := req.Host
+	// 确定协议（基于 X-Forwarded-Proto 或默认 https）
+	proto := "https"
+	if req.Header.Get("X-Forwarded-Proto") == "http" {
+		proto = "http"
+	}
+	// 构造完整的 endpoint URL
+	endpoint := fmt.Sprintf("%s://%s", proto, host)
+	return endpoint, nil
 }
 
 func match(ctx context.Context, reqHost, rawURL string) bool {
