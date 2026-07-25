@@ -11,7 +11,7 @@ CREATE TABLE robot (
  CONSTRAINT unique_robot UNIQUE (name, project_id)
 );
 
-CREATE TRIGGER robot_update_time_at_modtime BEFORE UPDATE ON robot FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER robot_update_time_at_modtime BEFORE UPDATE ON robot FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 CREATE TABLE oidc_user (
  id SERIAL NOT NULL,
@@ -34,14 +34,14 @@ CREATE TABLE oidc_user (
  creation_time timestamp default CURRENT_TIMESTAMP,
  update_time timestamp default CURRENT_TIMESTAMP,
  PRIMARY KEY (id),
- FOREIGN KEY (user_id) REFERENCES harbor_user(user_id),
+ --FOREIGN KEY (user_id) REFERENCES harbor_user(user_id),
  UNIQUE (subiss)
 );
 
-CREATE TRIGGER oidc_user_update_time_at_modtime BEFORE UPDATE ON oidc_user FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER oidc_user_update_time_at_modtime BEFORE UPDATE ON oidc_user FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 /*add master role*/
-INSERT INTO role (role_code, name) VALUES ('DRWS', 'master');
+INSERT INTO role (role_id, role_code, name) VALUES (4, 'DRWS', 'master');
 
 /*delete replication jobs whose policy has been marked as "deleted"*/
 DELETE FROM replication_job AS j
@@ -53,7 +53,7 @@ DELETE FROM replication_policy AS p
 WHERE p.deleted = TRUE;
 
 /*upgrade the replication_target to registry*/
-DROP TRIGGER replication_target_update_time_at_modtime ON replication_target;
+--DROP TRIGGER replication_target_update_time_at_modtime ON replication_target;
 ALTER TABLE replication_target RENAME TO registry;
 ALTER TABLE registry ALTER COLUMN url TYPE varchar(256);
 ALTER TABLE registry ADD COLUMN credential_type varchar(16);
@@ -83,7 +83,7 @@ UPDATE replication_policy SET override=TRUE;
 ALTER TABLE replication_policy DROP COLUMN project_id;
 ALTER TABLE replication_policy RENAME COLUMN cron_str TO trigger;
 
-DROP TRIGGER replication_immediate_trigger_update_time_at_modtime ON replication_immediate_trigger;
+--DROP TRIGGER replication_immediate_trigger_update_time_at_modtime ON replication_immediate_trigger;
 DROP TABLE replication_immediate_trigger;
 
 create table replication_execution (
@@ -155,7 +155,7 @@ ALTER TABLE replication_job DROP COLUMN op_uuid;
 DROP INDEX policy;
 DROP INDEX poid_uptime;
 DROP INDEX poid_status;
-DROP TRIGGER replication_job_update_time_at_modtime ON replication_job;
+--DROP TRIGGER replication_job_update_time_at_modtime ON replication_job;
 ALTER TABLE replication_job RENAME TO replication_schedule_job;
 
 /*

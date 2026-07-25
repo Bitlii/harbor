@@ -21,7 +21,8 @@ BEGIN
     END LOOP;
 END $$;
 
-ALTER TABLE user_group ADD CONSTRAINT unique_group_name UNIQUE (group_name);
+-- 在 0001_initial_schema.up.sql 中建表时设置 UNIQUE (group_name)
+--ALTER TABLE user_group ADD CONSTRAINT unique_group_name UNIQUE (group_name);
 
 
 /*

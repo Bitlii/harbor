@@ -54,7 +54,7 @@ CREATE FUNCTION update_update_time_at_column() RETURNS trigger
   END;
 $$;
 
-CREATE TRIGGER harbor_user_update_time_at_modtime BEFORE UPDATE ON harbor_user FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER harbor_user_update_time_at_modtime BEFORE UPDATE ON harbor_user FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 insert into harbor_user (username, password, realname, comment, deleted, sysadmin_flag, creation_time, update_time) values
 ('admin', '', 'system admin', 'admin user',false, true, NOW(), NOW()),
@@ -71,11 +71,11 @@ create table project (
  creation_time timestamp default CURRENT_TIMESTAMP,
  update_time timestamp  default CURRENT_TIMESTAMP,
  deleted boolean DEFAULT false NOT NULL,
- FOREIGN KEY (owner_id) REFERENCES harbor_user(user_id),
+ --FOREIGN KEY (owner_id) REFERENCES harbor_user(user_id),
  UNIQUE (name)
 );
 
-CREATE TRIGGER project_update_time_at_modtime BEFORE UPDATE ON project FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER project_update_time_at_modtime BEFORE UPDATE ON project FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 insert into project (owner_id, name, creation_time, update_time) values 
 (1, 'library', NOW(), NOW());
@@ -96,7 +96,7 @@ create table project_member (
  CONSTRAINT unique_project_entity_type UNIQUE (project_id, entity_id, entity_type)
 );
 
-CREATE TRIGGER project_member_update_time_at_modtime BEFORE UPDATE ON project_member FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER project_member_update_time_at_modtime BEFORE UPDATE ON project_member FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 insert into project_member (project_id, entity_id, role, entity_type) values
 (1, 1, 1, 'u');
@@ -110,11 +110,11 @@ create table project_metadata (
  update_time timestamp default CURRENT_TIMESTAMP,
  deleted boolean DEFAULT false NOT NULL,
  PRIMARY KEY (id),
- CONSTRAINT unique_project_id_and_name UNIQUE (project_id,name),
- FOREIGN KEY (project_id) REFERENCES project(project_id)
+ CONSTRAINT unique_project_id_and_name UNIQUE (project_id,name)--,
+ --FOREIGN KEY (project_id) REFERENCES project(project_id)
 );
 
-CREATE TRIGGER project_metadata_update_time_at_modtime BEFORE UPDATE ON project_metadata FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER project_metadata_update_time_at_modtime BEFORE UPDATE ON project_metadata FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 insert into project_metadata (project_id, name, value, creation_time, update_time, deleted) values
 (1, 'public', 'true', NOW(), NOW(), false);
@@ -126,10 +126,11 @@ create table user_group (
  ldap_group_dn varchar(512) NOT NULL,
  creation_time timestamp default CURRENT_TIMESTAMP,
  update_time timestamp default CURRENT_TIMESTAMP,
- PRIMARY KEY (id)
+ PRIMARY KEY (id),
+ UNIQUE (group_name)
 );
 
-CREATE TRIGGER user_group_update_time_at_modtime BEFORE UPDATE ON user_group FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER user_group_update_time_at_modtime BEFORE UPDATE ON user_group FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 create table access_log (
  log_id SERIAL NOT NULL,
@@ -158,7 +159,7 @@ create table repository (
  UNIQUE (name)
 );
 
-CREATE TRIGGER repository_update_time_at_modtime BEFORE UPDATE ON repository FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER repository_update_time_at_modtime BEFORE UPDATE ON repository FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 create table replication_policy (
  id SERIAL NOT NULL,
@@ -174,10 +175,11 @@ create table replication_policy (
  start_time timestamp NULL,
  creation_time timestamp default CURRENT_TIMESTAMP,
  update_time timestamp default CURRENT_TIMESTAMP,
- PRIMARY KEY (id)
+ PRIMARY KEY (id),
+ UNIQUE (name)
  );
 
-CREATE TRIGGER replication_policy_update_time_at_modtime BEFORE UPDATE ON replication_policy FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER replication_policy_update_time_at_modtime BEFORE UPDATE ON replication_policy FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 create table replication_target (
  id SERIAL NOT NULL,
@@ -194,10 +196,11 @@ create table replication_target (
  insecure boolean NOT NULL DEFAULT false,
  creation_time timestamp default CURRENT_TIMESTAMP,
  update_time timestamp default CURRENT_TIMESTAMP,
- PRIMARY KEY (id)
+ PRIMARY KEY (id),
+ UNIQUE (name)
  );
  
-CREATE TRIGGER replication_target_update_time_at_modtime BEFORE UPDATE ON replication_target FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER replication_target_update_time_at_modtime BEFORE UPDATE ON replication_target FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 create table replication_job (
  id SERIAL NOT NULL,
@@ -219,7 +222,7 @@ CREATE INDEX policy ON replication_job (policy_id);
 CREATE INDEX poid_uptime ON replication_job (policy_id, update_time);
 CREATE INDEX poid_status ON replication_job (policy_id, status);
  
-CREATE TRIGGER replication_job_update_time_at_modtime BEFORE UPDATE ON replication_job FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER replication_job_update_time_at_modtime BEFORE UPDATE ON replication_job FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 create table replication_immediate_trigger (
  id SERIAL NOT NULL,
@@ -232,7 +235,7 @@ create table replication_immediate_trigger (
  PRIMARY KEY (id)
  );
  
- CREATE TRIGGER replication_immediate_trigger_update_time_at_modtime BEFORE UPDATE ON replication_immediate_trigger FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+ --CREATE TRIGGER replication_immediate_trigger_update_time_at_modtime BEFORE UPDATE ON replication_immediate_trigger FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
  create table img_scan_job (
  id SERIAL NOT NULL,
@@ -254,7 +257,7 @@ CREATE INDEX idx_digest ON img_scan_job (digest);
 CREATE INDEX idx_uuid ON img_scan_job (job_uuid);
 CREATE INDEX idx_repository_tag ON img_scan_job (repository,tag);
  
-CREATE TRIGGER img_scan_job_update_time_at_modtime BEFORE UPDATE ON img_scan_job FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER img_scan_job_update_time_at_modtime BEFORE UPDATE ON img_scan_job FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 create table img_scan_overview (
  id SERIAL NOT NULL,
@@ -272,7 +275,7 @@ create table img_scan_overview (
  UNIQUE(image_digest)
  );
  
-CREATE TRIGGER img_scan_overview_update_time_at_modtime BEFORE UPDATE ON img_scan_overview FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER img_scan_overview_update_time_at_modtime BEFORE UPDATE ON img_scan_overview FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 create table clair_vuln_timestamp (
 id SERIAL NOT NULL, 
@@ -299,7 +302,7 @@ create table harbor_label (
 's' for system level labels
 'u' for user level labels
 */
- level char(1) NOT NULL,
+ "level" char(1) NOT NULL,
 /*
 'g' for global labels
 'p' for project labels
@@ -313,7 +316,7 @@ create table harbor_label (
  CONSTRAINT unique_label UNIQUE (name,scope, project_id)
  );
 
-CREATE TRIGGER harbor_label_update_time_at_modtime BEFORE UPDATE ON harbor_label FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER harbor_label_update_time_at_modtime BEFORE UPDATE ON harbor_label FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 create table harbor_resource_label (
  id SERIAL NOT NULL,
@@ -339,7 +342,7 @@ the resource_name is the name of image when the resource_type is i
  CONSTRAINT unique_label_resource UNIQUE (label_id,resource_id, resource_name, resource_type)
  );
 
-CREATE TRIGGER harbor_resource_label_update_time_at_modtime BEFORE UPDATE ON harbor_resource_label FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER harbor_resource_label_update_time_at_modtime BEFORE UPDATE ON harbor_resource_label FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 create table admin_job (
  id SERIAL NOT NULL,
@@ -354,7 +357,7 @@ create table admin_job (
  PRIMARY KEY(id)
 );
 
-CREATE TRIGGER admin_job_update_time_at_modtime BEFORE UPDATE ON admin_job FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
+--CREATE TRIGGER admin_job_update_time_at_modtime BEFORE UPDATE ON admin_job FOR EACH ROW EXECUTE PROCEDURE update_update_time_at_column();
 
 CREATE INDEX admin_job_status ON admin_job (status);
 CREATE INDEX admin_job_uuid ON admin_job (job_uuid);

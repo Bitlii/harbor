@@ -6,10 +6,11 @@ create table job_log (
  job_uuid varchar (64) NOT NULL,
  creation_time timestamp default CURRENT_TIMESTAMP,
  content text,
- primary key (log_id)
+ primary key (log_id),
+ UNIQUE (job_uuid)
 );
 
-CREATE UNIQUE INDEX job_log_uuid ON job_log (job_uuid);
+--CREATE UNIQUE INDEX job_log_uuid ON job_log (job_uuid); -- 建表时设置
 
 /*
 Rename the duplicate names before adding "UNIQUE" constraint
@@ -54,5 +55,6 @@ BEGIN
     END LOOP;
 END $$;
 
-ALTER TABLE replication_policy ADD CONSTRAINT unique_policy_name UNIQUE (name);
-ALTER TABLE replication_target ADD CONSTRAINT unique_target_name UNIQUE (name);
+-- 在 0001_initial_schema.up.sql 中建表时设置  UNIQUE (name)
+-- ALTER TABLE replication_policy ADD CONSTRAINT unique_policy_name UNIQUE (name);
+-- ALTER TABLE replication_target ADD CONSTRAINT unique_target_name UNIQUE (name);

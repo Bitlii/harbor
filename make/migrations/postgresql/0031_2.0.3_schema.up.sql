@@ -17,9 +17,9 @@ WHERE id NOT IN
     GROUP BY t1.name, t1.repository_name);
 
 /* Insert the missing repository records */
-INSERT INTO repository (name, project_id)
-    SELECT DISTINCT repository_name, project_id FROM artifact WHERE repository_id<0 AND
-    repository_name NOT IN (SELECT name from repository);
+-- INSERT INTO repository (name, project_id)
+--     SELECT DISTINCT repository_name, project_id FROM artifact WHERE repository_id<0 AND
+--     repository_name NOT IN (SELECT name from repository);
 
 /* Update the repository id of artifact records */
 UPDATE artifact AS art

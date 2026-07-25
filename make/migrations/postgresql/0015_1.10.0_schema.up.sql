@@ -64,7 +64,7 @@ DROP TABLE IF EXISTS img_scan_overview;
 DROP TABLE IF EXISTS clair_vuln_timestamp;
 
 /* Add limited guest role */
-INSERT INTO role (role_code, name) VALUES ('LRS', 'limitedGuest');
+INSERT INTO role (role_id, role_code, name) VALUES (5, 'LRS', 'limitedGuest');
 
 /* Add revision and status code columns for admin job table */
 ALTER TABLE admin_job ADD COLUMN revision BIGINT DEFAULT 0;

@@ -87,14 +87,14 @@ CREATE TABLE quota_usage
 );
 
 /* only set quota and usage for 'library', and let the sync quota handling others. */
-INSERT INTO quota (reference, reference_id, hard, creation_time, update_time)
-SELECT 'project',
-       CAST(project_id AS VARCHAR),
-       '{"count": -1, "storage": -1}',
-       NOW(),
-       NOW()
-FROM project
-WHERE name = 'library' and deleted = 'f';
+-- INSERT INTO quota (reference, reference_id, hard, creation_time, update_time)
+-- SELECT 'project',
+--        CAST(project_id AS VARCHAR),
+--        '{"count": -1, "storage": -1}',
+--        NOW(),
+--        NOW()
+-- FROM project
+-- WHERE name = 'library' and deleted = 'f';
 
 INSERT INTO quota_usage (id, reference, reference_id, used, creation_time, update_time)
 SELECT id,
@@ -146,9 +146,12 @@ create table schedule
   id            SERIAL NOT NULL,
   job_id        varchar(64),
   status        varchar(64),
+  vendor_type varchar(16),
+  vendor_id int,
   creation_time timestamp default CURRENT_TIMESTAMP,
   update_time   timestamp default CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE (vendor_type, vendor_id)
 );
 
 /*add notification policy table*/

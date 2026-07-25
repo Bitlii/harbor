@@ -70,7 +70,7 @@ CREATE TABLE tag
   name          varchar(255) NOT NULL,
   push_time     timestamp default CURRENT_TIMESTAMP,
   pull_time     timestamp,
-  FOREIGN KEY (artifact_id) REFERENCES artifact(id),
+  --FOREIGN KEY (artifact_id) REFERENCES artifact(id),
   CONSTRAINT unique_tag UNIQUE (repository_id, name)
 );
 
@@ -116,8 +116,8 @@ CREATE TABLE artifact_reference
   platform    varchar(255),
   urls        varchar(1024),
   annotations jsonb,
-  FOREIGN KEY (parent_id) REFERENCES artifact(id),
-  FOREIGN KEY (child_id) REFERENCES artifact(id),
+  --FOREIGN KEY (parent_id) REFERENCES artifact(id),
+  --FOREIGN KEY (child_id) REFERENCES artifact(id),
   CONSTRAINT  unique_reference UNIQUE (parent_id, child_id)
 );
 
@@ -140,24 +140,24 @@ CREATE TABLE label_reference (
  artifact_id int NOT NULL,
  creation_time timestamp default CURRENT_TIMESTAMP,
  update_time timestamp default CURRENT_TIMESTAMP,
- FOREIGN KEY (label_id) REFERENCES harbor_label(id),
- FOREIGN KEY (artifact_id) REFERENCES artifact(id),
+ --FOREIGN KEY (label_id) REFERENCES harbor_label(id),
+ --FOREIGN KEY (artifact_id) REFERENCES artifact(id),
  CONSTRAINT unique_label_reference UNIQUE (label_id,artifact_id)
 );
 
 /*move the labels added to tag to artifact*/
-INSERT INTO label_reference (label_id, artifact_id, creation_time, update_time)
-(
-SELECT label.label_id, repo_tag.artifact_id, label.creation_time, label.update_time
-    FROM harbor_resource_label AS label
-    JOIN (
-        SELECT tag.artifact_id, CONCAT(repository.name, ':', tag.name) as name
-            FROM tag
-            JOIN repository
-            ON tag.repository_id = repository.repository_id
-    ) AS repo_tag
-    ON repo_tag.name = label.resource_name AND label.resource_type = 'i'
-) ON CONFLICT DO NOTHING;
+-- INSERT INTO label_reference (label_id, artifact_id, creation_time, update_time)
+-- (
+-- SELECT label.label_id, repo_tag.artifact_id, label.creation_time, label.update_time
+--     FROM harbor_resource_label AS label
+--     JOIN (
+--         SELECT tag.artifact_id, CONCAT(repository.name, ':', tag.name) as name
+--             FROM tag
+--             JOIN repository
+--             ON tag.repository_id = repository.repository_id
+--     ) AS repo_tag
+--     ON repo_tag.name = label.resource_name AND label.resource_type = 'i'
+-- ) ON CONFLICT DO NOTHING;
 
 /*remove the records for images in table 'harbor_resource_label'*/
 DELETE FROM harbor_resource_label WHERE resource_type = 'i';

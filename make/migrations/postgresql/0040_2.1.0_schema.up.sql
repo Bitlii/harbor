@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS task (
     creation_time timestamp DEFAULT CURRENT_TIMESTAMP,
     start_time timestamp,
     update_time timestamp,
-    end_time timestamp,
-    FOREIGN KEY (execution_id) REFERENCES execution(id)
+    end_time timestamp--,
+    --FOREIGN KEY (execution_id) REFERENCES execution(id)
 );
 
 ALTER TABLE blob ADD COLUMN IF NOT EXISTS update_time timestamp default CURRENT_TIMESTAMP;
@@ -69,22 +69,22 @@ CREATE TABLE IF NOT EXISTS p2p_preheat_policy (
     UNIQUE (name, project_id)
 );
 
-ALTER TABLE schedule ADD COLUMN IF NOT EXISTS vendor_type varchar(16);
-ALTER TABLE schedule ADD COLUMN IF NOT EXISTS vendor_id int;
+ALTER TABLE schedule ADD COLUMN IF NOT EXISTS vendor_type varchar(16); -- 建表时直接写了
+ALTER TABLE schedule ADD COLUMN IF NOT EXISTS vendor_id int; -- 建表时直接写了
 ALTER TABLE schedule ADD COLUMN IF NOT EXISTS cron varchar(64);
 ALTER TABLE schedule ADD COLUMN IF NOT EXISTS callback_func_name varchar(128);
 ALTER TABLE schedule ADD COLUMN IF NOT EXISTS callback_func_param text;
 
 /*abstract the cron, callback function parameters from table retention_policy*/
-UPDATE schedule
-SET vendor_type= 'RETENTION', vendor_id=retention.id, cron = retention.cron,
-    callback_func_name = 'RETENTION', callback_func_param=concat('{"PolicyID":', retention.id, ',"Trigger":"Schedule"}')
-FROM (
-    SELECT id, data::json->'trigger'->'references'->>'job_id' AS schedule_id,
-        data::json->'trigger'->'settings'->>'cron' AS cron
-        FROM retention_policy
-    ) AS retention
-WHERE schedule.id=retention.schedule_id::int;
+-- UPDATE schedule
+-- SET vendor_type= 'RETENTION', vendor_id=retention.id, cron = retention.cron,
+--     callback_func_name = 'RETENTION', callback_func_param=concat('{"PolicyID":', retention.id, ',"Trigger":"Schedule"}')
+-- FROM (
+--     SELECT id, data::json->'trigger'->'references'->>'job_id' AS schedule_id,
+--         data::json->'trigger'->'settings'->>'cron' AS cron
+--         FROM retention_policy
+--     ) AS retention
+-- WHERE schedule.id=retention.schedule_id::int;
 
 /*create new execution and task record for each schedule*/
 DO $$

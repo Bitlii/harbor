@@ -2,8 +2,8 @@
 Fixes issue https://github.com/goharbor/harbor/issues/13317
   Ensure the role_id of maintainer is 4 and the role_id of limited guest is 5
 */
-UPDATE role SET role_id=4 WHERE name='maintainer' AND role_id!=4;
-UPDATE role SET role_id=5 WHERE name='limitedGuest' AND role_id!=5;
+--UPDATE role SET role_id=4 WHERE name='maintainer' AND role_id!=4; --插入数据时id直接设置为4，插入时为 master，后面被改为 maintainer
+--UPDATE role SET role_id=5 WHERE name='limitedGuest' AND role_id!=5; --插入数据时直接写 role_id=5
 
 /*
  Fixes issue https://github.com/goharbor/harbor/issues/12700
@@ -293,7 +293,7 @@ ALTER TABLE scan_report DROP COLUMN IF EXISTS start_time;
 ALTER TABLE scan_report DROP COLUMN IF EXISTS end_time;
 
 /*add unique for vendor_type+vendor_id to avoid dup records when updating policies*/
-ALTER TABLE schedule ADD CONSTRAINT unique_schedule UNIQUE (vendor_type, vendor_id);
+--ALTER TABLE schedule ADD CONSTRAINT unique_schedule UNIQUE (vendor_type, vendor_id); -- 建表时写好
 
 /*move the gc schedule job records into the new schedule table*/
 DO $$
@@ -523,8 +523,8 @@ CREATE TABLE IF NOT EXISTS "vulnerability_record" (
     "description" text,
     "cwe_ids" text,
     "vendor_attributes" json,
-    UNIQUE ("cve_id", "registration_uuid", "package", "package_version"),
-    CONSTRAINT fk_registration_uuid FOREIGN  KEY(registration_uuid) REFERENCES scanner_registration(uuid) ON DELETE CASCADE
+    UNIQUE ("cve_id", "registration_uuid", "package", "package_version")--,
+    --CONSTRAINT fk_registration_uuid FOREIGN  KEY(registration_uuid) REFERENCES scanner_registration(uuid) ON DELETE CASCADE
 );
 
 -- --------------------------------------------------
@@ -534,9 +534,9 @@ CREATE TABLE IF NOT EXISTS "report_vulnerability_record" (
     "id" serial NOT NULL PRIMARY KEY,
     "report_uuid" text NOT NULL DEFAULT '' ,
     "vuln_record_id" bigint NOT NULL DEFAULT 0 ,
-    UNIQUE ("report_uuid", "vuln_record_id"),
-    CONSTRAINT fk_vuln_record_id FOREIGN  KEY(vuln_record_id) REFERENCES vulnerability_record(id) ON DELETE CASCADE,
-    CONSTRAINT fk_report_uuid FOREIGN  KEY(report_uuid) REFERENCES scan_report(uuid) ON DELETE CASCADE
+    UNIQUE ("report_uuid", "vuln_record_id")--,
+    --CONSTRAINT fk_vuln_record_id FOREIGN  KEY(vuln_record_id) REFERENCES vulnerability_record(id) ON DELETE CASCADE,
+    --CONSTRAINT fk_report_uuid FOREIGN  KEY(report_uuid) REFERENCES scan_report(uuid) ON DELETE CASCADE
 );
 
 /*make sure the revision of execution isn't null*/
