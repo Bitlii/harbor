@@ -1,0 +1,5 @@
+FROM harbor.ctyuncdn.cn/esx-k8s/harbor-core:v2.6.4
+ARG TARGETARCH
+ADD ./make/migrations/postgresql /harbor/migrations/postgresql
+ADD ./src/harbor_core_${TARGETARCH} /harbor/harbor_core
+

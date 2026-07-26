@@ -1,0 +1,3 @@
+FROM harbor.ctyuncdn.cn/esx-k8s/goharbor/harbor-jobservice:v2.6.4  
+ARG TARGETARCH
+ADD ./src/harbor_jobservice_${TARGETARCH} /harbor/harbor_jobservice
